@@ -36,20 +36,13 @@ def get_vswr(host="10.0.253.2", port="", password="motorola"):
 def get_vswr_br(host="10.0.253.2", port="18011", password="motorola"):
     tn = user_login(host=host, port=port, password=password)
     tn.write(b"get vswr\n")
-    tn.read_until(b"get vswr", timeout=5)
+    tn.read_until(b"Current VSWR ratio is ", timeout=1)
     tn.write(b"exit\n")
 
-    result = tn.read_all().decode('ascii')
-    item_list = result.split('\r\n')
-
     try:
-        vswr_ratio = item_list[4].strip().split(' ')[-1]
-        dpm_status = item_list[5].strip()
-
-        return vswr_ratio, dpm_status
-
+        return tn.read_all().decode('ascii').split('\r\n')[0]
     except:
-        return '',''
+        return ''
 ##################
 ##################
 def get_fwd_power(host="10.0.253.2", port="", password="motorola"):
