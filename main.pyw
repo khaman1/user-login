@@ -8,9 +8,6 @@ class ToolUI(UI):
         self.load_login_ui()
         self.exec()
 
-    def exec(self):
-        pass
-
     
 
 app = QtWidgets.QApplication(sys.argv)
