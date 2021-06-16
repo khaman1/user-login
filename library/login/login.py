@@ -42,24 +42,38 @@ class UI(QtWidgets.QMainWindow):
         output_power, dpm_status = get_fwd_power()
         reserve_power, dpm_status = get_rev_power()
 
+        
         print(vswr_ratio)
         print(output_power)
         print(reserve_power)
 
+        ####################
+        ####################
         if vswr_ratio:
-            self.findChild(QtWidgets.QLineEdit, 'VSWR1').setText(str(vswr_ratio))
+            self.findChild(QtWidgets.QLineEdit, 'VSWR1').setText(str(vswr_ratio).upper())
 
         if output_power:
-            self.findChild(QtWidgets.QLineEdit, 'FWD1').setText(str(output_power))
+            self.findChild(QtWidgets.QLineEdit, 'FWD1').setText(str(output_power).upper())
 
         if reserve_power:
-            self.findChild(QtWidgets.QLineEdit, 'REV1').setText(str(reserve_power))
+            self.findChild(QtWidgets.QLineEdit, 'REV1').setText(str(reserve_power).upper())
 
-        
-        # print(dpm_status)
-        #output_power = 1
-        #self.fwd1_view = self.findChild(QtWidgets.QLineEdit, 'FWD1').setText('123')
-        #self.fwd1_view
+        ####################
+        ####################
+        vswr_ratio_br = get_vswr_br()
+        if vswr_ratio_br:
+            self.findChild(QtWidgets.QLineEdit, 'VSWR_BR1').setText(str(vswr_ratio_br).upper())
+            
+
+        rssi_failure_cnt1, rssi_failure_cnt2, rssi_failure_cnt3 = get_rssi_br()
+        if rssi_failure_cnt1 != '':
+            self.findChild(QtWidgets.QLineEdit, 'RSSI1_BR1').setText(str(rssi_failure_cnt1).upper())
+
+        if rssi_failure_cnt2 != '':
+            self.findChild(QtWidgets.QLineEdit, 'RSSI2_BR1').setText(str(rssi_failure_cnt2).upper())
+
+        if rssi_failure_cnt3 != '':
+            self.findChild(QtWidgets.QLineEdit, 'RSSI3_BR1').setText(str(rssi_failure_cnt3).upper())
         
 
         

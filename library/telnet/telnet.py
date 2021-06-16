@@ -18,7 +18,7 @@ def user_login(host="10.0.253.2", port="", password="motorola"):
 def get_vswr(host="10.0.253.2", port="", password="motorola"):
     tn = user_login(host=host, port=port, password=password)
     tn.write(b"dpm 1 get vswr\n")
-    tn.read_until(b"dpm 1 get vswr", timeout=5)
+    tn.read_until(b"dpm 1 get vswr", timeout=3)
     tn.write(b"exit\n")
 
     result = tn.read_all().decode('ascii')
@@ -36,7 +36,7 @@ def get_vswr(host="10.0.253.2", port="", password="motorola"):
 def get_vswr_br(host="10.0.253.2", port="18011", password="motorola"):
     tn = user_login(host=host, port=port, password=password)
     tn.write(b"get vswr\n")
-    tn.read_until(b"Current VSWR ratio is ", timeout=1)
+    tn.read_until(b"Current VSWR ratio is ", timeout=3)
     tn.write(b"exit\n")
 
     try:
@@ -48,7 +48,7 @@ def get_vswr_br(host="10.0.253.2", port="18011", password="motorola"):
 def get_fwd_power(host="10.0.253.2", port="", password="motorola"):
     tn = user_login(host=host, port=port, password=password)
     tn.write(b"dpm 1 get fwd_power\n")
-    tn.read_until(b"dpm 1 get fwd_power", timeout=5)
+    tn.read_until(b"dpm 1 get fwd_power", timeout=3)
     tn.write(b"exit\n")
 
     result = tn.read_all().decode('ascii')
@@ -68,7 +68,7 @@ def get_fwd_power(host="10.0.253.2", port="", password="motorola"):
 def get_rev_power(host="10.0.253.2", port="", password="motorola"):
     tn = user_login(host=host, port=port, password=password)
     tn.write(b"dpm 1 get rev_power\n")
-    tn.read_until(b"dpm 1 get rev_power", timeout=5)
+    tn.read_until(b"dpm 1 get rev_power", timeout=3)
     tn.write(b"exit\n")
 
     result = tn.read_all().decode('ascii')
@@ -83,3 +83,18 @@ def get_rev_power(host="10.0.253.2", port="", password="motorola"):
 
     except:
         return '',''
+
+##################
+def get_rssi_br(host="10.0.253.2", port="180011", password="motorola"):
+    tn = user_login(host=host, port=port, password=password)
+    tn.write(b"rssicnt\n")
+    tn.read_until(b"RSSI failure counters values:", timeout=3)
+    tn.write(b"exit\n")
+
+    item_list = tn.read_all().decode('ascii').split('\r\n')
+
+    rssi_failure_cnt1 = item_list[1].split(' = ')[1]
+    rssi_failure_cnt2 = item_list[2].split(' = ')[1]
+    rssi_failure_cnt3 = item_list[3].split(' = ')[1]
+
+    return rssi_failure_cnt1, rssi_failure_cnt2, rssi_failure_cnt3
