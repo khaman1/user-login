@@ -3,3 +3,4 @@ keyboard
 openpyxl
 unidecode
 Exscript
+pyinstaller
