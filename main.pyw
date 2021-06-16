@@ -6,7 +6,6 @@ class ToolUI(UI):
     
     def __init__(self):
         self.load_login_ui()
-        self.exec()
 
     
 

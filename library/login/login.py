@@ -1,5 +1,6 @@
 from PyQt5 import QtWidgets, uic
 from PyQt5 import QtCore
+from PyQt5.QtCore import QTimer,QDateTime
 from time import sleep
 from ..telnet.telnet import *
 
@@ -29,26 +30,39 @@ class UI(QtWidgets.QMainWindow):
         
         ##################################
         ##################################
-        self.fwd1_button = self.findChild(QtWidgets.QPushButton, 'FWD1')
-        
-        
-
         self.resize(900, 600)
         self.show()
 
-    def exec(self):
-        while True:
-            vswr_ratio, dpm_status = get_vswr()
-            output_power, dpm_status = get_fwd_power()
-            reserve_power, dpm_status = get_rev_power()
-            
+        self.timer=QTimer()
+        self.timer.timeout.connect(self.exec)
+        self.timer.start(5000)
 
-            print(vswr_ratio)
-            print(output_power)
-            print(reserve_power)
-            print(dpm_status)
-            
-            sleep(3)
+    def exec(self): 
+        vswr_ratio, dpm_status = get_vswr()
+        output_power, dpm_status = get_fwd_power()
+        reserve_power, dpm_status = get_rev_power()
+
+        print(vswr_ratio)
+        print(output_power)
+        print(reserve_power)
+
+        if vswr_ratio:
+            self.findChild(QtWidgets.QLineEdit, 'VSWR1').setText(str(vswr_ratio))
+
+        if output_power:
+            self.findChild(QtWidgets.QLineEdit, 'FWD1').setText(str(output_power))
+
+        if reserve_power:
+            self.findChild(QtWidgets.QLineEdit, 'REV1').setText(str(reserve_power))
+
+        
+        # print(dpm_status)
+        #output_power = 1
+        #self.fwd1_view = self.findChild(QtWidgets.QLineEdit, 'FWD1').setText('123')
+        #self.fwd1_view
+        
+
+        
 
     def get_username(self):
         return self.username_input.text()
